@@ -10,10 +10,10 @@ def get_all_entries():
 
         db_cursor.execute("""
             SELECT
-                e.id
-                e.concept
-                e.entry
-                e.mood_id
+                e.id,
+                e.concept,
+                e.entry,
+                e.mood_id,
                 e.date
             FROM entries e
         """)
