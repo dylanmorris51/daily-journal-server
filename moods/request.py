@@ -4,7 +4,7 @@ from models import Mood
 
 def get_all_moods():
     
-    with sqlite3.connect("./kennel.db") as conn:
+    with sqlite3.connect("./dailyjournal.db") as conn:
 
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
