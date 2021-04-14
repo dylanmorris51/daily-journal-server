@@ -30,3 +30,9 @@ SELECT
     e.date
 FROM entries e
 WHERE e.id = 2
+
+SELECT
+    m.id,
+    m.label
+FROM moods m
+WHERE m.id = 3
