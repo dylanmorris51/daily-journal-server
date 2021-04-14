@@ -1,8 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from animals import get_all_animals, get_single_animal, create_animal, delete_animal, update_animal
-from locations import get_all_locations, get_single_location, create_location, delete_location, update_location
-from customers import get_all_customers, get_single_customer, create_customer, delete_customer, update_customer
-from employees import get_all_employees, get_single_employee, create_employee, delete_employee, update_employee
+# from animals import get_all_animals, get_single_animal, create_animal, delete_animal, update_animal
+# from locations import get_all_locations, get_single_location, create_location, delete_location, update_location
+# from customers import get_all_customers, get_single_customer, create_customer, delete_customer, update_customer
+# from employees import get_all_employees, get_single_employee, create_employee, delete_employee, update_employee
 import json
 
 # Here's a class. It inherits from another class.
@@ -59,30 +59,18 @@ class HandleRequests(BaseHTTPRequestHandler):
         #Parse the URL and capture the tuple that is returned
         (resource, id) = self.parse_url(self.path)
 
-        if resource == "animals":
+        if resource == "entries":
             if id is not None:
-                response = f"{get_single_animal(id)}"
+                response = f"{get_single_entry(id)}"
             else:
-                response = f"{get_all_animals()}"
+                response = f"{get_all_entries()}"
 
-        if resource == "locations":
+        if resource == "moods":
             if id is not None:
-                response = f"{get_single_location(id)}"
+                response = f"{get_single_mood(id)}"
 
             else:
-                response = f"{get_all_locations()}"
-
-        if resource == "customers":
-            if id is not None:
-                response = f"{get_single_customer(id)}"
-            else:
-                response = f"{get_all_customers()}"
-
-        if resource == "employees":
-            if id is not None:
-                response = f"{get_single_employee(id)}"
-            else:
-                response = f"{get_all_employees()}"
+                response = f"{get_all_moods()}"
 
         # This weird code sends a response back to the client
         self.wfile.write(f"{response}".encode())
@@ -108,17 +96,12 @@ class HandleRequests(BaseHTTPRequestHandler):
         # the orange squiggle, you'll define the create_item
         # function next
 
-        if resource == "animals":
-            new_item = create_animal(post_body)
+        if resource == "entries":
+            new_item = create_entry(post_body)
 
-        if resource == "locations":
-            new_item = create_location(post_body)
+        if resource == "moods":
+            new_item = create_mood(post_body)
 
-        if resource == "employees":
-            new_item = create_employee(post_body)
-
-        if resource == "customers":
-            new_item = create_customer(post_body)
 
 
         # Encode the new animal and send in response
@@ -136,20 +119,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         # Delete a single animal from the list
-        if resource == "animals":
-            update_animal(id, post_body)
+        if resource == "entries":
+            update_entry(id, post_body)
 
-        if resource == "customers":
-            update_customer(id, post_body)
-
-        if resource == "employees":
-            update_employee(id, post_body)
-            
-        if resource == "locations":
-            update_location(id, post_body)    
-            
-            # Encode the new animal and send in response
-            self.wfile.write("".encode())
+        if resource == "moods":
+            update_mood(id, post_body)
 
 
     def do_DELETE(self):
@@ -160,17 +134,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         # Delete a single item from the list
-        if resource == "animals":
-            delete_animal(id)
+        if resource == "entries":
+            delete_entry(id)
 
-        if resource == "customers":
-            delete_customer(id)
-
-        if resource == "employees":
-            delete_employee(id)
-
-        if resource == "locations":
-            delete_location(id)
+        if resource == "moods":
+            delete_mood(id)
 
         # Encode the new item and send in response
         self.wfile.write("".encode())
