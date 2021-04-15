@@ -58,3 +58,18 @@ def delete_entry(id):
             DELETE FROM entries
             WHERE id = ?
         """, (id,))
+
+def get_entries_by_search(searchTerms):
+    with sqlite3.connect("./dailyjournal.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+            SELECT
+                e.id,
+                e.concept,
+                e.entry,
+                e.mood_id,
+                e.date
+            FROM entries e
+            WHERE CONTAINS (e.entry, ?)
+        """, (searchTerms,))
