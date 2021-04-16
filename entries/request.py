@@ -61,6 +61,7 @@ def delete_entry(id):
 
 def get_entries_by_search(searchTerms):
     with sqlite3.connect("./dailyjournal.db") as conn:
+        conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
@@ -71,5 +72,16 @@ def get_entries_by_search(searchTerms):
                 e.mood_id,
                 e.date
             FROM entries e
-            WHERE CONTAINS (e.entry, ?)
-        """, (searchTerms,))
+            WHERE e.concept LIKE ? OR e.entry LIKE ? 
+        """, (f"%{searchTerms}", f"%{searchTerms}"))
+
+        dataset = db_cursor.fetchall()
+
+        entries = []
+
+        for row in dataset:
+            entry = Entry(row['id'], row['concept'], row['entry'], row['mood_id'], row['date'])
+
+            entries.append(entry.__dict__)
+
+        return json.dumps(entries)

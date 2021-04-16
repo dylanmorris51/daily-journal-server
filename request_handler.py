@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from entries import get_all_entries, get_single_entry, delete_entry
+from entries import get_all_entries, get_single_entry, delete_entry, get_entries_by_search
 from moods import get_all_moods, get_single_mood
 import json
 
@@ -87,10 +87,13 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_moods()}"
 
-            # elif len(parsed) == 3:
-            #     (resource, key, value) = parsed
+        elif len(parsed) == 3:
+            (resource, key, value) = parsed
 
-            #     if key ==
+            if resource == "entries":
+                if key == "q":
+                    response = f"{get_entries_by_search(value)}"
+
         # This weird code sends a response back to the client
         self.wfile.write(f"{response}".encode())
 
