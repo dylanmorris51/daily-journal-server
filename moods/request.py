@@ -13,7 +13,7 @@ def get_all_moods():
             SELECT
                 m.id,
                 m.label
-            FROM moods m
+            FROM mood m
         """)
 
         moods = []

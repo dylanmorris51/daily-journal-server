@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from models import Entry
+from models import Entry, Mood
 
 def get_all_entries():
     with sqlite3.connect("./dailyjournal.db") as conn:
@@ -14,8 +14,11 @@ def get_all_entries():
                 e.concept,
                 e.entry,
                 e.mood_id,
-                e.date
+                e.date,
+                m.label
             FROM entries e
+            JOIN mood m
+                ON m.id = e.mood_id
         """)
 
         entries = []
@@ -23,6 +26,10 @@ def get_all_entries():
 
         for row in dataset:
             entry = Entry(row['id'], row['concept'], row['entry'], row['mood_id'], row['date'])
+
+            mood = Mood(row['mood_id'], row['label'])
+
+            entry.mood = mood.__dict__
 
             entries.append(entry.__dict__)
 
@@ -73,7 +80,7 @@ def get_entries_by_search(searchTerms):
                 e.date
             FROM entries e
             WHERE e.concept LIKE ? OR e.entry LIKE ? 
-        """, (f"%{searchTerms}", f"%{searchTerms}"))
+        """, (f"%{searchTerms}%", f"%{searchTerms}%"))
 
         dataset = db_cursor.fetchall()
 
@@ -85,3 +92,24 @@ def get_entries_by_search(searchTerms):
             entries.append(entry.__dict__)
 
         return json.dumps(entries)
+
+def create_entry(new_entry):
+    with sqlite3.connect("./dailyjournal.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+            INSERT INTO Entries
+                ( concept, entry, mood_id, date)
+            VALUES
+                ( ?, ?, ?, ?)
+        """, (
+            new_entry['concept'],
+            new_entry['entry'],
+            new_entry['moodId'],
+            new_entry['date']
+        ))
+
+        id = db_cursor.lastrowid
+
+        new_entry['id'] = id
+    return json.dumps(new_entry)

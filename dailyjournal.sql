@@ -18,6 +18,14 @@ INSERT INTO Moods
 VALUES (3, 'Frusturated');
 INSERT INTO Moods
 VALUES (4, 'Overwhelmed');
+INSERT INTO Mood
+VALUES (5, 'Happy');
+INSERT INTO Mood
+VALUES (6, 'Sad');
+INSERT INTO Mood
+VALUES (7, 'Angry');
+INSERT INTO Mood
+VALUES (8, 'Ok');
 INSERT INTO Entries
 VALUES (
         1,
@@ -42,6 +50,38 @@ VALUES (
         '2021-02-16',
         1
     );
+INSERT INTO Entries
+VALUES (
+    4,
+    'JSON',
+    'We learned JSON server can do a lot of the heavy lifting for you as long as you know what to ask from it.',
+    1598458543321,
+    1
+);
+INSERT INTO Entries
+VALUES (
+    5,
+    'Python',
+    'Python is used for a ton of things as it is a versatile programming language based on indentation instead of curly braces',
+    1598458543321,
+    4
+);
+INSERT INTO Entries
+VALUES (
+    6,
+    'Server',
+    'Apparently back-end means writing the other side of the fetch call',
+    1598458543321,
+    1
+);
+INSERT INTO Entries
+VALUES (
+    7,
+    'Network',
+    'I learned the network tab in dev tools is useful for viewing the post body being sent to the back end so you know exactly which keys to grab to find values to insert into your database using sequel since sequel requires snake_case and JSON requires camelCase',
+    1598458543321,
+    1
+);
 SELECT e.id,
     e.concept,
     e.entry,
@@ -62,3 +102,5 @@ SELECT e.id,
     e.date
 FROM entries e
 WHERE e.concept LIKE '%ugg%'
+
+ALTER TABLE 'Moods' RENAME TO 'Mood'
