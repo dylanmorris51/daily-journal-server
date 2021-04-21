@@ -1,5 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from entries import get_all_entries, get_single_entry, delete_entry, get_entries_by_search, create_entry
+from entries import get_all_entries, get_single_entry, delete_entry, get_entries_by_search, create_entry, update_entry
 from moods import get_all_moods, get_single_mood
 import json
 
